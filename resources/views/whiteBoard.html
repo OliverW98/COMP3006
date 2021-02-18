@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <link rel="stylesheet" href="../css/board.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+    <script src="../js/whiteBoard.js"></script>
+    <meta charset="UTF-8">
+    <title>Chess Board</title>
+</head>
+<body>
+<button id="btnHome">Home</button>
+<div class="modal fade" id="promotionMessage" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false"
+     aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center">Choose Promotion</h5>
+            </div>
+            <div class="modal-body text-center">
+                <button id="promoteQueen" class="btn btn-secondary">Queen</button>
+                <button id="promoteRook" class="btn btn-secondary">Rook</button>
+                <button id="promoteBishop" class="btn btn-secondary">Bishop</button>
+                <button id="promoteKnight" class="btn btn-secondary">Knight</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="gameStoppedMessage" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false"
+     aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="gameStoppedTitle" class="modal-title text-center">Check Mate</h5>
+            </div>
+            <div class="modal-body text-center">
+                <button id="home" class="btn btn-secondary">Home</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="playerNameBox">
+    <div class="column">
+        <span class="dot black"></span>
+    </div>
+    <div class="column">
+        <p class="playerName" id="playerNameBlack"></p>
+    </div>
+    <div class="column">
+        <span id="playerBlackTurn" class="dot"></span>
+    </div>
+</div>
+<div id="board">
+    <div row="7" col="0" class="square"></div>
+    <div row="7" col="1" class="square gray"></div>
+    <div row="7" col="2" class="square"></div>
+    <div row="7" col="3" class="square gray"></div>
+    <div row="7" col="4" class="square"></div>
+    <div row="7" col="5" class="square gray"></div>
+    <div row="7" col="6" class="square"></div>
+    <div row="7" col="7" class="square gray"></div>
+    <br>
+    <div row="6" col="0" class="square gray"></div>
+    <div row="6" col="1" class="square"></div>
+    <div row="6" col="2" class="square gray"></div>
+    <div row="6" col="3" class="square"></div>
+    <div row="6" col="4" class="square gray"></div>
+    <div row="6" col="5" class="square"></div>
+    <div row="6" col="6" class="square gray"></div>
+    <div row="6" col="7" class="square"></div>
+    <br>
+    <div row="5" col="0" class="square"></div>
+    <div row="5" col="1" class="square gray"></div>
+    <div row="5" col="2" class="square"></div>
+    <div row="5" col="3" class="square gray"></div>
+    <div row="5" col="4" class="square"></div>
+    <div row="5" col="5" class="square gray"></div>
+    <div row="5" col="6" class="square"></div>
+    <div row="5" col="7" class="square gray"></div>
+    <br>
+    <div row="4" col="0" class="square gray"></div>
+    <div row="4" col="1" class="square"></div>
+    <div row="4" col="2" class="square gray"></div>
+    <div row="4" col="3" class="square"></div>
+    <div row="4" col="4" class="square gray"></div>
+    <div row="4" col="5" class="square"></div>
+    <div row="4" col="6" class="square gray"></div>
+    <div row="4" col="7" class="square"></div>
+    <br>
+    <div row="3" col="0" class="square"></div>
+    <div row="3" col="1" class="square gray"></div>
+    <div row="3" col="2" class="square"></div>
+    <div row="3" col="3" class="square gray"></div>
+    <div row="3" col="4" class="square"></div>
+    <div row="3" col="5" class="square gray"></div>
+    <div row="3" col="6" class="square"></div>
+    <div row="3" col="7" class="square gray"></div>
+    <br>
+    <div row="2" col="0" class="square gray"></div>
+    <div row="2" col="1" class="square"></div>
+    <div row="2" col="2" class="square gray"></div>
+    <div row="2" col="3" class="square"></div>
+    <div row="2" col="4" class="square gray"></div>
+    <div row="2" col="5" class="square"></div>
+    <div row="2" col="6" class="square gray"></div>
+    <div row="2" col="7" class="square"></div>
+    <br>
+    <div row="1" col="0" class="square"></div>
+    <div row="1" col="1" class="square gray"></div>
+    <div row="1" col="2" class="square"></div>
+    <div row="1" col="3" class="square gray"></div>
+    <div row="1" col="4" class="square"></div>
+    <div row="1" col="5" class="square gray"></div>
+    <div row="1" col="6" class="square"></div>
+    <div row="1" col="7" class="square gray"></div>
+    <br>
+    <div row="0" col="0" class="square gray"></div>
+    <div row="0" col="1" class="square"></div>
+    <div row="0" col="2" class="square gray"></div>
+    <div row="0" col="3" class="square"></div>
+    <div row="0" col="4" class="square gray"></div>
+    <div row="0" col="5" class="square"></div>
+    <div row="0" col="6" class="square gray"></div>
+    <div row="0" col="7" class="square"></div>
+</div>
+<div class="playerNameBox">
+    <div class="column">
+        <span class="dot white"></span>
+    </div>
+    <div class="column">
+        <p class="playerName" id="playerNameWhite"></p>
+    </div>
+    <div class="column">
+        <span id="playerWhiteTurn" class="dot"></span>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+th {
+    font-size: 32px;
+    background-color: blue;
+    color: white;
+}
+
+td {
+    padding: 5px;
+}
+
+tbody {
+    font-size: 32px;
+    text-align: center;
+}
+
+.playerCol {
+    width: 30%;
+}
+
+.infoCol {
+    width: 20%;
+}
+
+/*#table1 {*/
+/*    border-collapse: collapse;*/
+/*}*/
